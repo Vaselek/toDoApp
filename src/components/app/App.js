@@ -1,14 +1,13 @@
 import React from 'react';
 
-import Button from 'react-bootstrap/Button';
 
 import './App.css';
+import Tasks from "../tasks/Tasks";
 
 function App() {
   return (
     <div className="App">
-      <Button>hi</Button>
-      The app
+      <Tasks/>
     </div>
   );
 }
