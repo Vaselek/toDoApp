@@ -5,7 +5,7 @@ import {createSlice} from "@reduxjs/toolkit";
 const slice = createSlice({
   name: 'tasks',
   initialState: {
-    tasks: []
+    tasks: [],
   },
   reducers: {
     getTasksSuccess: (state, action) => {
@@ -26,5 +26,20 @@ export const getTasks = () => dispatch => {
     dispatch(getTasksSuccess(tasks))
   } catch (e) {
     return console.error(e.message)
+  }
+};
+
+const saveTask = (task) => {
+  const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  tasks.push(task);
+  localStorage.setItem('tasks', JSON.stringify(tasks))
+};
+
+export const createTask = (task) => dispatch => {
+  try {
+    saveTask(task);
+    dispatch(getTasks());
+  } catch (e) {
+    return console.error(e.message);
   }
 };
