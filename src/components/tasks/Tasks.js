@@ -1,37 +1,46 @@
 import React from 'react';
 import Task from "../task/Task";
 import {Col, Container, Row} from "react-bootstrap";
+import {useDispatch, useSelector} from "react-redux";
+import {getTasks} from "../../store/tasks";
+import useDeepCompareEffect from "use-deep-compare-effect";
 
-const tasksData = [
-  {
-    title: 'wash hands',
-    isCompleted: false,
-    createdAt: '24.09.1984'
-  },
-  {
-    title: 'wash hands',
-    isCompleted: true,
-    createdAt: '24.09.1984'
-  },
-  {
-    title: 'wash hands',
-    isCompleted: false,
-    createdAt: '24.09.1984'
-  }
-];
+// const tasksData = [
+//   {
+//     title: 'wash hands',
+//     isCompleted: false,
+//     createdAt: '24.09.1984'
+//   },
+//   {
+//     title: 'wash hands',
+//     isCompleted: true,
+//     createdAt: '24.09.1984'
+//   },
+//   {
+//     title: 'wash hands',
+//     isCompleted: false,
+//     createdAt: '24.09.1984'
+//   }
+// ];
 
-let tasks = tasksData.map((task, taskNumber) => <Task {...task} key={taskNumber} />);
+function Tasks() {
 
-const Tasks = () => {
+  const dispatch = useDispatch();
+  let { tasks } = useSelector(state=> state.tasks);
+
+  useDeepCompareEffect(() => dispatch(getTasks()), [tasks]);
+
+  let taskList = tasks.map((task, taskNumber) => <Task {...task} key={taskNumber} />);
+
   return (
     <Container>
       <Row>
         <Col xs={8}>Task Title</Col>
         <Col xs={4}>CreatedAt</Col>
       </Row>
-      {tasks}
+      {taskList}
     </Container>
   );
-};
+}
 
 export default Tasks;
