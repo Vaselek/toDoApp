@@ -1,3 +1,7 @@
 .task {
     border-top: 1px solid lightgrey;
 }
+
+.completedTask {
+    text-decoration: line-through;
+}

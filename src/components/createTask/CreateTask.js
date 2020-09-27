@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TaskForm from "./TaskForm";
 import {useDispatch} from "react-redux";
 import {createTask} from "../../store/tasks";
@@ -7,27 +7,45 @@ import {createTask} from "../../store/tasks";
 
 const CreateTask = () => {
 
-  const dispatch = useDispatch();
+  const taskTemplate = {
+    title: '',
+    isCompleted: false,
+    createdAt: ''
+  };
 
-  const handleCreateTask = (e) => {
+  const dispatch = useDispatch();
+  const [task, setTask] = useState(taskTemplate);
+
+  const handleCreateTask = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     const form = new FormData(e.currentTarget);
-    let task = {};
+    const newTask = {...task};
 
     for (let pair of form.entries()) {
-      task[pair[0]] = pair[1]
+      newTask[pair[0]] = pair[1]
     }
 
-    task.isCompleted = false;
-    task.createdAt = new Date();
+    newTask.createdAt = new Date();
 
-    dispatch(createTask(task))
+    await dispatch(createTask(newTask));
+
+    clearState();
+  };
+
+  const clearState = () => {
+     setTask(taskTemplate);
+  };
+
+  const handleChangeTask = (e) => {
+    const updatedTask = {...task};
+    updatedTask[e.target.name] = e.target.value;
+    setTask(updatedTask);
   };
 
   return (
     <div>
-      <TaskForm handleSubmit={handleCreateTask}/>
+      <TaskForm task={task} handleChange={handleChangeTask} handleSubmit={handleCreateTask}/>
     </div>
   );
 };
