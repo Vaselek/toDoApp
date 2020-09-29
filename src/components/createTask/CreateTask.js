@@ -26,7 +26,7 @@ const CreateTask = () => {
       newTask[pair[0]] = pair[1]
     }
 
-    newTask.createdAt = new Date();
+    newTask.createdAt = new Date().toISOString();
 
     await dispatch(createTask(newTask));
 

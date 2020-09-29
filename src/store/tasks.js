@@ -8,9 +8,18 @@ const slice = createSlice({
     tasks: [],
   },
   reducers: {
-    getTasksSuccess: (state, action) => {
-      state.tasks = action.payload;
-    }
+    getTasksSuccess: (state, action) => (
+      {
+        ...state,
+        tasks: action.payload
+      }
+    ),
+    appendTask: (state, action) => (
+      {
+        ...state,
+        tasks: [...state.tasks, action.payload]
+      }
+    )
   }
 });
 
@@ -18,7 +27,7 @@ export default slice.reducer;
 
 // Actions
 
-const { getTasksSuccess } = slice.actions;
+const { getTasksSuccess, appendTask } = slice.actions;
 
 export const getTasks = () => dispatch => {
   try {
@@ -29,17 +38,18 @@ export const getTasks = () => dispatch => {
   }
 };
 
-const saveTask = (task) => {
+const saveTask = async (task) => {
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   task.id = tasks.length;
   tasks.push(task);
   localStorage.setItem('tasks', JSON.stringify(tasks))
+  return task
 };
 
-export const createTask = (task) => dispatch => {
+export const createTask = (taskParams) => async (dispatch) => {
   try {
-    saveTask(task);
-    dispatch(getTasks());
+    const task = await saveTask(taskParams);
+    dispatch(appendTask(task))
   } catch (e) {
     return console.error(e.message);
   }
