@@ -25,8 +25,8 @@ const slice = createSlice({
       }
     ),
     updateTasksSuccess: (state, action) => {
-      const taskIndex = state.tasks.findIndex(el => el.id === action.payload.id);
-      state.tasks[taskIndex] = action.payload;
+      const task = state.tasks.find(el => el.id === action.payload.id);
+      task.isCompleted = action.payload.isCompleted;
     }
   }
 });
@@ -66,13 +66,19 @@ export const updateTask = task => (dispatch) => {
 
 // Selectors
 
-export const selectNewTasks = createSelector(
-  state => state.tasks.tasks,
+const tasksSelector = ({tasks}) => tasks
+const taskListSelector = createSelector(
+  tasksSelector,
+  ({ tasks }) => tasks
+)
+
+export const newTasksSelector = createSelector(
+  taskListSelector,
   tasks => tasks.filter(task => !task.isCompleted)
 );
 
-export const selectCompletedTasks = createSelector(
-  state => state.tasks.tasks,
+export const completedTasksSelector = createSelector(
+  taskListSelector,
   tasks => tasks.filter(task => task.isCompleted)
 );
 

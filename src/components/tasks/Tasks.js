@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Task from "../task/Task";
 import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { getTasks, selectNewTasks, selectCompletedTasks } from "../../store/tasks";
+import { getTasks, newTasksSelector, completedTasksSelector } from "../../store/tasks";
 
 
 // const tasksData = [
@@ -26,8 +26,8 @@ import { getTasks, selectNewTasks, selectCompletedTasks } from "../../store/task
 function Tasks() {
 
   const dispatch = useDispatch();
-  const newTasks = useSelector(selectNewTasks);
-  const completedTasks = useSelector(selectCompletedTasks);
+  const newTasks = useSelector(newTasksSelector);
+  const completedTasks = useSelector(completedTasksSelector);
   const [loaded, setLoaded] = useState(false);
 
   useEffect( () => {
