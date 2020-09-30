@@ -1,5 +1,6 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import LocalStorageAdapter from "./localStorageAdapter";
+import { createSelector } from "reselect";
 
 const storageAdapter = new LocalStorageAdapter();
 
@@ -45,7 +46,6 @@ export const getTasks = () => dispatch => {
   }
 };
 
-
 export const createTask = (taskParams) => async (dispatch) => {
   try {
     const task = storageAdapter.createTask(taskParams);
@@ -62,4 +62,17 @@ export const updateTask = task => (dispatch) => {
   } catch (e) {
     console.error(e.message);
   }
-}
+};
+
+// Selectors
+
+export const selectNewTasks = createSelector(
+  state => state.tasks.tasks,
+  tasks => tasks.filter(task => !task.isCompleted)
+);
+
+export const selectCompletedTasks = createSelector(
+  state => state.tasks.tasks,
+  tasks => tasks.filter(task => task.isCompleted)
+);
+

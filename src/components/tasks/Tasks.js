@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Task from "../task/Task";
-import {Col, Container, Row} from "react-bootstrap";
-import {useDispatch, useSelector} from "react-redux";
-import {getTasks} from "../../store/tasks";
+import { Col, Container, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { getTasks, selectNewTasks, selectCompletedTasks } from "../../store/tasks";
+
 
 // const tasksData = [
 //   {
@@ -25,21 +26,16 @@ import {getTasks} from "../../store/tasks";
 function Tasks() {
 
   const dispatch = useDispatch();
-  const { tasks } = useSelector( state => state.tasks );
+  const newTasks = useSelector(selectNewTasks);
+  const completedTasks = useSelector(selectCompletedTasks);
   const [loaded, setLoaded] = useState(false);
 
   useEffect( () => {
-    dispatch(getTasks())
+    dispatch(getTasks());
     setLoaded(true)
-  }, [loaded]);
+  }, [loaded, dispatch]);
 
-  let newTaskList = tasks
-    .filter(task => !task.isCompleted)
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    .map((task) =>  <Task {...task} key={task.id} />);
-
-  let completedTaskList = tasks
-    .filter(task => task.isCompleted)
+  const listTasks = (tasks) => tasks
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     .map((task) =>  <Task {...task} key={task.id} />);
 
@@ -55,12 +51,12 @@ function Tasks() {
         <Col xs={8}>New Tasks</Col>
         <Col xs={4}>CreatedAt</Col>
       </Row>
-      {newTaskList}
+      {listTasks(newTasks)}
       <Row>
         <Col xs={8}>Completed tasks</Col>
         <Col xs={4}>CreatedAt</Col>
       </Row>
-      {completedTaskList}
+      {listTasks(completedTasks)}
     </Container>
   );
 }

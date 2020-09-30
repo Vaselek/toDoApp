@@ -9,7 +9,7 @@ export default class LocalStorageAdapter {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     task.id = tasks.length;
     tasks.push(task);
-    localStorage.setItem('tasks', JSON.stringify(tasks))
+    localStorage.setItem('tasks', JSON.stringify(tasks));
     return task
   }
 
