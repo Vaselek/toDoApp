@@ -10,7 +10,7 @@ const CreateTask = () => {
   const taskTemplate = {
     title: '',
     isCompleted: false,
-    createdAt: ''
+    created_at: ''
   };
 
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const CreateTask = () => {
       newTask[pair[0]] = pair[1]
     }
 
-    newTask.createdAt = new Date().toISOString();
+    newTask.created_at = new Date().toISOString();
 
     await dispatch(createTask(newTask));
 

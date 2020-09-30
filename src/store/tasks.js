@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import LocalStorageAdapter from "./localStorageAdapter";
+import FirebaseAdapter from "./firebaseAdapter";
 import { createSelector } from "reselect";
 
-const storageAdapter = new LocalStorageAdapter();
+const storageAdapter = new FirebaseAdapter();
 
 // Slice
 
@@ -37,9 +37,9 @@ export default slice.reducer;
 
 const { getTasksSuccess, appendTask, updateTasksSuccess } = slice.actions;
 
-export const getTasks = () => dispatch => {
+export const getTasks = () => async dispatch => {
   try {
-    const tasks = storageAdapter.fetchTasks();
+    const tasks = await storageAdapter.fetchTasks();
     dispatch(getTasksSuccess(tasks))
   } catch (e) {
     return console.error(e.message)
@@ -48,16 +48,16 @@ export const getTasks = () => dispatch => {
 
 export const createTask = (taskParams) => async (dispatch) => {
   try {
-    const task = storageAdapter.createTask(taskParams);
+    const task = await storageAdapter.createTask(taskParams);
     dispatch(appendTask(task))
   } catch (e) {
     return console.error(e.message);
   }
 };
 
-export const updateTask = task => (dispatch) => {
+export const updateTask = task => async (dispatch) => {
   try {
-    const updatedTask = storageAdapter.updateTask(task);
+    const updatedTask = await storageAdapter.updateTask(task);
     dispatch(updateTasksSuccess(updatedTask));
   } catch (e) {
     console.error(e.message);

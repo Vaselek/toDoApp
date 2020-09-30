@@ -9,17 +9,17 @@ import { getTasks, newTasksSelector, completedTasksSelector } from "../../store/
 //   {
 //     title: 'wash hands',
 //     isCompleted: false,
-//     createdAt: '24.09.1984'
+//     created_at: '24.09.1984'
 //   },
 //   {
 //     title: 'wash hands',
 //     isCompleted: true,
-//     createdAt: '24.09.1984'
+//     created_at: '24.09.1984'
 //   },
 //   {
 //     title: 'wash hands',
 //     isCompleted: false,
-//     createdAt: '24.09.1984'
+//     created_at: '24.09.1984'
 //   }
 // ];
 
@@ -30,13 +30,13 @@ function Tasks() {
   const completedTasks = useSelector(completedTasksSelector);
   const [loaded, setLoaded] = useState(false);
 
-  useEffect( () => {
-    dispatch(getTasks());
+  useEffect(() => {
+    dispatch(getTasks())
     setLoaded(true)
   }, [loaded, dispatch]);
 
   const listTasks = (tasks) => tasks
-    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     .map((task) =>  <Task {...task} key={task.id} />);
 
   if (!loaded) {
@@ -49,12 +49,12 @@ function Tasks() {
     <Container>
       <Row>
         <Col xs={8}>New Tasks</Col>
-        <Col xs={4}>CreatedAt</Col>
+        <Col xs={4}>created_at</Col>
       </Row>
       {listTasks(newTasks)}
       <Row>
         <Col xs={8}>Completed tasks</Col>
-        <Col xs={4}>CreatedAt</Col>
+        <Col xs={4}>created_at</Col>
       </Row>
       {listTasks(completedTasks)}
     </Container>
