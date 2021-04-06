@@ -2,19 +2,12 @@ import React, {useState} from 'react';
 import TaskForm from "./TaskForm";
 import {useDispatch} from "react-redux";
 import {createTask} from "../../store/tasks";
-
-
+import {useTaskEditing} from "../hooks/useTaskEditing";
 
 const CreateTask = () => {
 
-  const taskTemplate = {
-    title: '',
-    isCompleted: false,
-    created_at: ''
-  };
-
+  const { task, clearTaskForm, editTaskForm } = useTaskEditing();
   const dispatch = useDispatch();
-  const [task, setTask] = useState(taskTemplate);
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
@@ -26,26 +19,14 @@ const CreateTask = () => {
       newTask[pair[0]] = pair[1]
     }
 
-    newTask.created_at = new Date().toISOString();
-
+    newTask.createdAt = new Date().toISOString();
     await dispatch(createTask(newTask));
-
-    clearState();
-  };
-
-  const clearState = () => {
-     setTask(taskTemplate);
-  };
-
-  const handleChangeTask = (e) => {
-    const updatedTask = {...task};
-    updatedTask[e.target.name] = e.target.value;
-    setTask(updatedTask);
+    clearTaskForm();
   };
 
   return (
     <div>
-      <TaskForm task={task} handleChange={handleChangeTask} handleSubmit={handleCreateTask}/>
+      <TaskForm task={task} handleChange={editTaskForm} handleSubmit={handleCreateTask}/>
     </div>
   );
 };

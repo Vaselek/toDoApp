@@ -22,7 +22,7 @@ const Task = ({...task}) => {
         </Form>
       </Col>
       <Col className={task.isCompleted ? 'completedTask' : ''} xs={6}>{task.title}</Col>
-      <Col xs={4}>{task.created_at}</Col>
+      <Col xs={4}>{task.createdAt}</Col>
     </Row>
   );
 };

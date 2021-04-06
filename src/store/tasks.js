@@ -9,23 +9,17 @@ const storageAdapter = new FirebaseAdapter();
 const slice = createSlice({
   name: 'tasks',
   initialState: {
-    tasks: [],
+    list: [],
   },
   reducers: {
-    getTasksSuccess: (state, action) => (
-      {
-        ...state,
-        tasks: action.payload
-      }
-    ),
-    appendTask: (state, action) => (
-      {
-        ...state,
-        tasks: [...state.tasks, action.payload]
-      }
-    ),
+    getTasksSuccess: (state, action) => {
+      state.list = action.payload
+    },
+    appendTask: (state, action) => {
+      state.list.push(action.payload)
+    },
     updateTasksSuccess: (state, action) => {
-      const task = state.tasks.find(el => el.id === action.payload.id);
+      const task = state.list.find(el => el.id === action.payload.id);
       task.isCompleted = action.payload.isCompleted;
     }
   }
@@ -66,19 +60,19 @@ export const updateTask = task => async (dispatch) => {
 
 // Selectors
 
-const tasksSelector = ({tasks}) => tasks
+const tasksSelector = ({tasks}) => tasks;
 const taskListSelector = createSelector(
   tasksSelector,
-  ({ tasks }) => tasks
-)
+  ({ list }) => list
+);
 
 export const newTasksSelector = createSelector(
   taskListSelector,
-  tasks => tasks.filter(task => !task.isCompleted)
+  list => list.filter(task => !task.isCompleted)
 );
 
 export const completedTasksSelector = createSelector(
   taskListSelector,
-  tasks => tasks.filter(task => task.isCompleted)
+  list => list.filter(task => task.isCompleted)
 );
 

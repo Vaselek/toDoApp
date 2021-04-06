@@ -1,14 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {combineReducers} from "redux";
 
-import tasks from './tasks';
-
-const reducer = combineReducers({
-  tasks
-});
+import tasksReducer from './tasks';
 
 const store = configureStore({
-  reducer,
+  reducer: {
+    tasks: tasksReducer
+  }
 });
 
 export default store;
